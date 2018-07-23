@@ -52,8 +52,8 @@
 //User settings
 const unsigned long INTERVALLOWERBOUND = 5000; //lower bound for time interval delay between blasts
 const unsigned long INTERVALUPPERBOUND = 10000; //upper bound
-const int NUMOFSOUNDS = 14;//the number of sound samples in the SD card
-const unsigned long SCREENIDLETIME = 60000; //idle duration before screen auto shutoff
+const int NUMOFSOUNDS = 15;//the number of sound samples in the SD card
+const unsigned long SCREENIDLETIME = 600000; //idle duration before screen auto shutoff
 
 //mp3 player
 MP3 mp3;
@@ -63,19 +63,19 @@ unsigned long lullInterval;//will be randomised between lower and upper bound
 int selectedTrack;//can be randomised between 1 and NUMOFSOUNDS;
 unsigned long timeLastPlayed;//time the last sound was played
 bool isPlaying;
-int operationMode = AUTOMODE;
+int operationMode = MANUALMODE;
+unsigned long lastButtonPressedTime;
+bool isScreenIdle;
 
+//Buttons
 Button playPauseButton = Button(D3, PULLUP);
 Button prevButton = Button(D4, PULLUP);
 Button nextButton = Button(D8, PULLDOWN);
 Button modeButton = Button(D7, PULLUP);
 
-//OLED - D0, D1, D2
+//OLED 
 #define OLED_RESET D0
 Adafruit_SSD1306 display(OLED_RESET);
-
-unsigned long lastButtonPressedTime;
-bool isScreenIdle;
 
 #if (SSD1306_LCDHEIGHT != 48) //64x48 pixels
 #error("Height incorrect, please fix Adafruit_SSD1306.h!");
@@ -101,7 +101,9 @@ void setup() {
 }
 
 void loop() {
-  if (operationMode == AUTOMODE) {
+  if (operationMode == AUTOMODE) { 
+    
+    //your automated script here 
     if (millis() - timeLastPlayed > lullInterval && !isPlaying) {
       isPlaying = true;
       selectedTrack = random(1, NUMOFSOUNDS + 1); //min is inclusive, max is exclusive
@@ -114,8 +116,9 @@ void loop() {
     } else {
       isPlaying = false;
     }
-  } else { //manual mode with button operation
-
+  } else { 
+    
+    //manual mode with button operation
     if (playPauseButton.uniquePress()) {
       lastButtonPressedTime = millis(); isScreenIdle = false;
       if (mp3.get_status() == 1) { //(0 - STOP, 1 - PLAY, 2 - PAUSE)
