@@ -19,10 +19,10 @@
             GND -> mp3 GND
 
         buttons:
-            wemos D3 (pull-up) - play/pause
-            wemos D4 (pull-up) - prev
-            wemos D8 (pull-down) - next
-            wemos D7 (pull-up) - auto or manual mode selection
+            wemos D3 (pull-up) - play/pause, built-in resistor
+            wemos D4 (pull-up) - prev, built-in resistor
+            wemos D8 (pull-down) - next, built-in resistor
+            wemos D7 (pull-up) - auto or manual mode selection, 10K resistor to 3.3V
 
         OLED shield:
             wemos D0 -> OLED D0
@@ -50,9 +50,9 @@
 #define AUTOMODE 1
 
 //User settings
-const unsigned long INTERVALLOWERBOUND = 5000; //lower bound for time interval delay between blasts
-const unsigned long INTERVALUPPERBOUND = 10000; //upper bound
-const int NUMOFSOUNDS = 15;//the number of sound samples in the SD card
+const unsigned long INTERVALLOWERBOUND = 60000000; //lower bound for time interval delay between blasts
+const unsigned long INTERVALUPPERBOUND = 120000000; //upper bound
+const int NUMOFSOUNDS = 53;//the number of sound samples in the SD card
 const unsigned long SCREENIDLETIME = 600000; //idle duration before screen auto shutoff
 
 //mp3 player
@@ -137,6 +137,7 @@ void loop() {
       }
       Serial.print("file num playing: "); Serial.println(selectedTrack); Serial.println();
       mp3.select_file(selectedTrack);
+      mp3.pause();
     } else if (nextButton.uniquePress()) {
       lastButtonPressedTime = millis(); isScreenIdle = false;
       Serial.println("next button pressed");
@@ -146,6 +147,7 @@ void loop() {
       }
       Serial.print("file num playing: "); Serial.println(selectedTrack); Serial.println();
       mp3.select_file(selectedTrack);
+      mp3.pause();
     }
   }
 
