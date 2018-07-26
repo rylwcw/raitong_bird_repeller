@@ -32,10 +32,11 @@
             GND -> OLED GND
 
     Note:
-        - Software serial pin definitions changed in the library:
+        - Software serial pin definitions changed in the mp3 library:
             SoftwareSerial COM_SOFT(14, 12); //wemos rx, tx
         - Auto mode means automated script running for sound program.
           Manual mode means user manual operation using the buttons.
+        - Button library: https://github.com/lthben/Button  
 *******************************************************/
 
 #include <MP3_Module.h>
