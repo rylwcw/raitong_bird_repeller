@@ -137,7 +137,8 @@ void loop() {
         selectedTrack = NUMOFSOUNDS;
       }
       Serial.print("file num playing: "); Serial.println(selectedTrack); Serial.println();
-        //added this chunk=========================================================================
+      mp3.select_file(selectedTrack);
+              //added this chunk=========================================================================
       if (mp3.get_status() == 1) { //(0 - STOP, 1 - PLAY, 2 - PAUSE)
       mp3.pause();
       Serial.println("PAUSED");
@@ -145,8 +146,6 @@ void loop() {
         mp3.pause();
       }
       //=========================================================================
-      mp3.select_file(selectedTrack);
-      
     } else if (nextButton.uniquePress()) {
       lastButtonPressedTime = millis(); isScreenIdle = false;
       Serial.println("next button pressed");
@@ -155,7 +154,9 @@ void loop() {
         selectedTrack = 1;
       }
       Serial.print("file num playing: "); Serial.println(selectedTrack); Serial.println();
-        //added this chunk=========================================================================
+
+      mp3.select_file(selectedTrack);
+              //added this chunk=========================================================================
       if (mp3.get_status() == 1) { //(0 - STOP, 1 - PLAY, 2 - PAUSE)
       mp3.pause();
       Serial.println("PAUSED");
@@ -163,8 +164,6 @@ void loop() {
         mp3.pause();
       }
       //=========================================================================
-      mp3.select_file(selectedTrack);
-      
     }
   }
 
