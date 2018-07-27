@@ -51,9 +51,9 @@
 #define AUTOMODE 1
 
 //User settings
-const unsigned long INTERVALLOWERBOUND = 60000000; //lower bound for time interval delay between blasts
-const unsigned long INTERVALUPPERBOUND = 120000000; //upper bound
-const int NUMOFSOUNDS = 53;//the number of sound samples in the SD card
+const unsigned long INTERVALLOWERBOUND = 15000; //lower bound for time interval delay between blasts
+const unsigned long INTERVALUPPERBOUND = 20000; //upper bound
+const int NUMOFSOUNDS = 15;//the number of sound samples in the SD card
 const unsigned long SCREENIDLETIME = 600000; //idle duration before screen auto shutoff
 
 //mp3 player
@@ -137,8 +137,16 @@ void loop() {
         selectedTrack = NUMOFSOUNDS;
       }
       Serial.print("file num playing: "); Serial.println(selectedTrack); Serial.println();
-      mp3.select_file(selectedTrack);
+        //added this chunk=========================================================================
+      if (mp3.get_status() == 1) { //(0 - STOP, 1 - PLAY, 2 - PAUSE)
       mp3.pause();
+      Serial.println("PAUSED");
+      }else{
+        mp3.pause();
+      }
+      //=========================================================================
+      mp3.select_file(selectedTrack);
+      
     } else if (nextButton.uniquePress()) {
       lastButtonPressedTime = millis(); isScreenIdle = false;
       Serial.println("next button pressed");
@@ -147,8 +155,16 @@ void loop() {
         selectedTrack = 1;
       }
       Serial.print("file num playing: "); Serial.println(selectedTrack); Serial.println();
-      mp3.select_file(selectedTrack);
+        //added this chunk=========================================================================
+      if (mp3.get_status() == 1) { //(0 - STOP, 1 - PLAY, 2 - PAUSE)
       mp3.pause();
+      Serial.println("PAUSED");
+      }else{
+        mp3.pause();
+      }
+      //=========================================================================
+      mp3.select_file(selectedTrack);
+      
     }
   }
 
